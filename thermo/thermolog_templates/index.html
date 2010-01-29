@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Web thermostat</title>
+        <link href="../static/css/style.css" rel="stylesheet" type="text/css"></link>
+        <script language="javascript" type="text/javascript" src="../static/flot/jquery.js"></script>
+        <script language="javascript" type="text/javascript" src="../static/flot/jquery.flot.js"></script>
+    </head>
+    <body>
+        <div id="placeholder" style="width:600px;height:400px;"></div>
+        <script id="source" language="javascript" type="text/javascript">
+            $(function () {
+                var temps = [
+
+{% if recent_temps_list %}
+    {% for reading in recent_temps_list %}
+        [{{ reading.timestamp|date:"U" }}000,{{ reading.temperature }}], 
+    {% endfor %}
+{% endif %}
+                ];
+
+                var setpoints = [
+
+{% if recent_temps_list %}
+    {% for reading in recent_temps_list %}
+        [{{ reading.timestamp|date:"U" }}000,{{ reading.setpoint }}], 
+    {% endfor %}
+{% endif %}
+                ];
+
+                var heater = [
+
+{% if recent_temps_list %}
+    {% for reading in recent_temps_list %}
+        {% if reading.heater_state %}
+            [{{ reading.timestamp|date:"U" }}000, {{ reading.setpoint }}],
+        {% else %}
+            [{{ reading.timestamp|date:"U" }}000, 0], 
+        {% endif %}
+    {% endfor %}
+{% endif %}
+                ];
+
+                $.plot(
+                    $("#placeholder"),
+                    [{ label: "Heater state", data: heater , color: "#FFCCCC", bars: { show: true, barWidth: 100000, align: "center" } },
+                    { label: "Setpoint", data: setpoints , color: "#A80000", lines: { show: true } },
+                    { label: "Temperature", data: temps , color: "#3366CC", lines: { show: true } }],
+                    {
+                        series: {
+                            points: { show: false }
+                        },
+                        xaxis: {
+                            ticks: 10,
+                            mode: "time"
+                        },
+                        yaxis: {
+                            ticks: 10,
+                            min: 10,
+                            max: 25
+                        },
+                        grid: {
+                            backgroundColor: { colors: ["#fff", "#eee"] }
+                    }
+                }
+
+
+                );
+            });
+        </script>
+   </body>
+</html>
+
