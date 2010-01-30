@@ -1,0 +1,33 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}<div id="content-main">
+      <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.module_name }}_form">{% block form_top %}{% endblock %}
+    <p>Test of the emergency broadcast system. This is only a test. In an actual emergency, you would already be dead.</p>
+      <div>
+      {% if is_popup %}<input type="hidden" name="_popup" value="1" />{% endif %}
+      {% if save_on_top %}{# submit_row (this block tag makes us crash now) #}{% endif %}
+
+        {% for fieldset in adminform %}
+            {% include "admin/includes/fieldset.html" %}
+        {% endfor %}
+
+        {% block after_field_sets %}{% endblock %}
+
+        {% for inline_admin_formset in inline_admin_formsets %}
+            {% include inline_admin_formset.opts.template %}
+        {% endfor %}
+
+        {% block after_related_objects %}{% endblock %}
+
+    <div class="submit-row" >
+        <input type="submit" value="Save" class="default" name="_save" />
+        <input type="submit" value="Save and add another" name="_addanother"  />
+        <input type="submit" value="Save and continue editing" name="_continue" />
+    </div>
+
+        {% if adminform and add %}
+            <script type="text/javascript">document.getElementById("{{ adminform.first_field.auto_id }}").focus();</script>
+        {% endif %}
+        </div>
+    </form></div>
+{% endblock %}

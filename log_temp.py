@@ -15,7 +15,11 @@ cur = con.cursor()
 p = subprocess.Popen('/usr/local/bin/gettemp', stdout=subprocess.PIPE)
 (deg_c, error) = p.communicate()
 
-(setpoint,) = cur.execute("SELECT 'thermolog_setpoint'.'setpoint' FROM 'thermolog_setpoint' WHERE 'thermolog_setpoint'.'start_day' * 24 + 'thermolog_setpoint'.'start_time' < strftime('%w', 'now') * 24 + TIME() ORDER BY 'thermolog_setpoint'.'start_day' * 24 + 'thermolog_setpoint'.'start_time' DESC LIMIT 1;").fetchone()
+# older query from before setpoint start_time was stored as integer number of minutes
+
+# (setpoint,) = cur.execute("SELECT 'thermolog_setpoint'.'setpoint' FROM 'thermolog_setpoint' WHERE 'thermolog_setpoint'.'start_day' * 24 + 'thermolog_setpoint'.'start_time' < strftime('%w', 'now') * 24 + TIME() ORDER BY 'thermolog_setpoint'.'start_day' * 24 + 'thermolog_setpoint'.'start_time' DESC LIMIT 1;").fetchone()
+
+(setpoint,) = cur.execute("SELECT 'thermolog_setpoint'.'setpoint' FROM 'thermolog_setpoint' WHERE 'thermolog_setpoint'.'start_time' < strftime('%w', 'now') * 24 + TIME() ORDER BY 'thermolog_setpoint'.'start_time' DESC LIMIT 1;").fetchone()
 
 corr_temp = float(deg_c) - offset
 

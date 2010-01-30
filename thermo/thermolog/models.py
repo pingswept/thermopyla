@@ -13,12 +13,11 @@ class TempReading(models.Model):
 
 class Setpoint(models.Model):
     id = models.AutoField(primary_key=True)
-    start_day = models.IntegerField()
-    start_time = models.TimeField()
+    start_time = models.IntegerField() # in minutes of week
     setpoint = models.FloatField()
     def __unicode__(self):
-        return u'Target of %s starting at %s on day %s' % \
-        (self.setpoint, self.start_time, self.start_day)
+        return u'Target of %s C starting at minute %s of the week' % \
+        (self.setpoint, self.start_time)
 
 #class RecipeEntry(models.Model):
 #   ingredient = models.ForeignKey(Ingredient)
