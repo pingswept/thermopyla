@@ -16,14 +16,9 @@ class Setpoint(models.Model):
     start_time = models.IntegerField() # in minutes of week
     setpoint = models.FloatField()
     def __unicode__(self):
-        return u'Target of %s C starting at minute %s of the week' % \
-        (self.setpoint, self.start_time)
-
-#class RecipeEntry(models.Model):
-#   ingredient = models.ForeignKey(Ingredient)
-#   drink = models.ForeignKey(Drink)
-#   volume = models.FloatField()
-#   def __unicode__(self):
-#       return str(self.drink) + ' - ' + str(self.ingredient)
-#   class Meta:
-#       verbose_name_plural = "recipe entries"
+        days =['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        hour_of_day = str((self.start_time % 1440) / 60)
+        minute_of_hour = int((self.start_time % 1440) % 60)
+        day_of_week = days[self.start_time / 1440]
+        return u'Target of %s C starting at %s:%02d on %s' % \
+        (self.setpoint, hour_of_day, minute_of_hour, day_of_week)
