@@ -61,8 +61,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django.middleware.sqllog.SQLLogToConsoleMiddleware',
+#    'debug_toolbar.middleware.DebugToolbarMiddleware',
+#    'django.middleware.sqllog.SQLLogToConsoleMiddleware',
 )
 
 ROOT_URLCONF = 'thermo.urls'
@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'thermo.thermolog',
-    'debug_toolbar'
+#    'debug_toolbar'
 )
 
 INTERNAL_IPS = ('192.168.1.42')
