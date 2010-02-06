@@ -24,9 +24,9 @@ corr_temp = float(deg_c) - offset
 
 if corr_temp < setpoint - hysteresis:
     heater_state = 1
-else if corr_temp > setpoint + hysteresis:
+elif corr_temp > setpoint + hysteresis:
     heater_state = 0
-else
+else:
     heater_state = previous_heater_state
 
 cur.execute("INSERT INTO thermolog_tempreading VALUES (NULL, '%s', '%s', '%s', '%s')" % (datetime.datetime.utcnow(), str(corr_temp), setpoint, str(heater_state)))
