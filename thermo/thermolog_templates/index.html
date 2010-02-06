@@ -12,22 +12,25 @@
         <script id="source" language="javascript" type="text/javascript">
 
             $(function () {
-                var data_list = [
+            var d = new Date()
+            var tzoffset = d.getTimezoneOffset() * 60000;
+
+            var data_list = [
 {% if recent_temps_list %}
     {% for reading in recent_temps_list %}
-        [{{ reading.timestamp|date:"U" }}000,{{ reading.temperature }}, {{reading.setpoint }}],
+        [{{ reading.timestamp|date:"U" }}000,{{ reading.temperature }}, {{ reading.setpoint }}, {{ reading.heater_state }}],
     {% endfor %}
 {% endif %}
                 ];
 
-            var heater = [new Array(i[0], i[2]) for each (i in data_list)];
-            var setpoints = [new Array(i[0], i[2]) for each (i in data_list)];
-            var temps = [new Array(i[0], i[1]) for each (i in data_list)];
+            var heater = [new Array(i[0] - tzoffset, i[2] * i[3]) for each (i in data_list)];
+            var setpoints = [new Array(i[0] - tzoffset, i[2]) for each (i in data_list)];
+            var temps = [new Array(i[0] - tzoffset, i[1]) for each (i in data_list)];
 
                 $.plot(
                     $("#placeholder"),
                     [{ label: "Heater on", data: heater , color: "#FFCCCC", bars: { show: true, barWidth: 100000, align: "center" } }, 
-                    {label: "Setpoint", data: setpoints , color: "#A80000", lines: { show: true } },
+                    { label: "Setpoint", data: setpoints , color: "#A80000", lines: { show: true } },
                     { label: "Temperature", data: temps , color: "#3366CC", lines: { show: true } }],
                     {
                         series: {

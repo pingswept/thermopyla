@@ -4,9 +4,8 @@ class TempReading(models.Model):
     id = models.AutoField(primary_key=True)
     timestamp = models.DateTimeField('time of measurement')
     temperature = models.FloatField()
-    units = models.CharField(max_length=32)
     setpoint = models.FloatField()
-    heater_state = models.BooleanField()
+    heater_state = models.IntegerField()
     def __unicode__(self):
         return u'Reading of %s C from %s' % \
         (self.temperature, self.timestamp.strftime("%A, %d %B %Y %I:%M%p")) 
