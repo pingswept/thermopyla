@@ -16,9 +16,8 @@
             var tzoffset = d.getTimezoneOffset() * 60000;
 
             var data_list = [
-{% if recent_temps_list %}
-    {% for reading in recent_temps_list %}
-        [{{ reading.timestamp|date:"U" }}000,{{ reading.temperature }}, {{ reading.setpoint }}, {{ reading.heater_state }}],
+{% if readings_list %}
+    {% for reading in readings_list %}[{{ reading }}],
     {% endfor %}
 {% endif %}
                 ];
